@@ -3,8 +3,8 @@ Small tool to simulate AdapterContamination of NGS reads.
 
 Usage:
 
+`java -jar AdapterContaminator.jar input.fq 75 "AGGGAAATT"`
 
-java -jar AdapterContaminator.jar input.fq 75 "AGGGAAATT"
 
 adds randomly adapter fragments of length n = $size("AGGGAAATT") to your sequencing reads, 
 replacing n bases with adapter sequence. 
