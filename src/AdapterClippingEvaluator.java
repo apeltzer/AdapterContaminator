@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by peltzer on 23/03/2017.
@@ -69,6 +71,23 @@ public class AdapterClippingEvaluator {
         System.out.println("Total correctly trimmed: " + correctlyTrimmed + "\n");
         System.out.printf("Overtrimmed: " + overtrimmed+ "\n");
         System.out.println("Undertrimmed: " + undertrimmed+ "\n");
+
+
+        System.out.println("Overtrimmed Data Length Distribution: \n");
+        System.out.println("Size\tNumber\n");
+        SortedSet<Integer> keys = new TreeSet<Integer>(overtrimmed_data.keySet());
+
+        for(Integer key : keys){
+            System.out.println(key+"\t" +overtrimmed_data.get(key) + "\n");
+        }
+
+        System.out.println("Undertrimmed Data Length Distribution: \n");
+        System.out.println("Size\tNumber\n");
+        SortedSet<Integer> keysut = new TreeSet<Integer>(undertrimmed_data.keySet());
+
+        for(Integer key : keysut){
+            System.out.println(key+"\t" +undertrimmed_data.get(key) + "\n");
+        }
 
 
 
