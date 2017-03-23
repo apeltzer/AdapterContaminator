@@ -25,7 +25,7 @@ public class AdaptorContaminator {
         fr = new FileReader(f);
         bfr = new BufferedReader(fr);
 
-        fileWriter = new FileWriter(new File(f.getAbsolutePath()+".ACcont.fq"));
+        fileWriter = new FileWriter(new File(f.getAbsolutePath()+"." + desired_read_length +".ACcont.fq"));
         bfwr = new BufferedWriter(fileWriter);
         runWorker();
     }
@@ -39,12 +39,27 @@ public class AdaptorContaminator {
         int cutoff = desired_read_length-randomNumber;
 
         String tmpid = rawRead.getId(); //we add information about what we did to the read for evaluation later...
-        tmpid += "-AC-"+String.valueOf(cutoff); //add -AC-7 to let people know that this has AdaptorContamination of length 7 of used input adapter (!)
         String tmpseq = rawRead.getSeq();
-        tmpseq = tmpseq.substring(0,randomNumber-1);//TODO check if this is inclusive/exclusive, probably have to add +1 here!
-        tmpseq = tmpseq + adapter.substring(0,cutoff);
-        String tmpstrand  = rawRead.getStrand(); //we just keep it as well
-        String tmpqual = rawRead.getQual(); //just keep the quality equal to before, dont care about this for now
+        String tmpstrand = rawRead.getStrand();//we just keep it as well
+        String tmpqual = rawRead.getQual();//just keep the quality equal to before, dont care about this for now
+
+        if(randomNumber <= tmpseq.length()){
+            tmpseq = tmpseq.substring(0,randomNumber-1);
+            tmpseq = tmpseq + adapter.substring(0,cutoff);
+            tmpid += "-AC-"+String.valueOf(cutoff); //add -AC-7 to let people know that this has AdaptorContamination of length 7 of used input adapter (!)
+            if(tmpseq.length() > tmpqual.length()) {
+                int offset = tmpseq.length() - tmpqual.length();
+                tmpqual = tmpqual + tmpqual.substring(tmpqual.length()-offset, tmpqual.length());
+            }
+        } else {
+            int elong = desired_read_length - tmpseq.length();
+            tmpseq = tmpseq + adapter.substring(0, elong);
+            tmpid += "-AC+"+String.valueOf(elong);
+            tmpstrand = rawRead.getStrand();
+            tmpqual = tmpqual + tmpqual.substring(tmpqual.length()-elong, tmpqual.length());
+        }
+
+
 
         return new Read(tmpid, tmpseq,tmpstrand,tmpqual);
     }

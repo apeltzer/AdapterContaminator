@@ -1,4 +1,7 @@
 # AdapterContaminator
+
+Version 0.1
+
 Small tool to simulate AdapterContamination of NGS reads.
 
 Usage:
