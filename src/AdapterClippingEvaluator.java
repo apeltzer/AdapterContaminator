@@ -78,7 +78,7 @@ public class AdapterClippingEvaluator {
         SortedSet<Integer> keys = new TreeSet<Integer>(overtrimmed_data.keySet());
 
         for(Integer key : keys){
-            System.out.println(key+"\t" +overtrimmed_data.get(key) + "\n");
+            System.out.println(key+"\t" +overtrimmed_data.get(key));
         }
 
         System.out.println("Undertrimmed Data Length Distribution: \n");
@@ -86,7 +86,7 @@ public class AdapterClippingEvaluator {
         SortedSet<Integer> keysut = new TreeSet<Integer>(undertrimmed_data.keySet());
 
         for(Integer key : keysut){
-            System.out.println(key+"\t" +undertrimmed_data.get(key) + "\n");
+            System.out.println(key+"\t" +undertrimmed_data.get(key));
         }
 
 
