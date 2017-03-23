@@ -37,16 +37,18 @@ public class AdaptorContaminator {
 
         int randomNumber = ThreadLocalRandom.current().nextInt(desired_read_length-adapter_length, desired_read_length+1);
         int cutoff = desired_read_length-randomNumber;
+        int originalReadLength = 0;
 
         String tmpid = rawRead.getId(); //we add information about what we did to the read for evaluation later...
         String tmpseq = rawRead.getSeq();
+        originalReadLength = tmpseq.length();
         String tmpstrand = rawRead.getStrand();//we just keep it as well
         String tmpqual = rawRead.getQual();//just keep the quality equal to before, dont care about this for now
 
         if(randomNumber <= tmpseq.length()){
             tmpseq = tmpseq.substring(0,randomNumber-1);
             tmpseq = tmpseq + adapter.substring(0,cutoff);
-            tmpid += "-AC-"+String.valueOf(cutoff); //add -AC-7 to let people know that this has AdaptorContamination of length 7 of used input adapter (!)
+            tmpid += "-OL-" + String.valueOf(originalReadLength) + "-AC-"+String.valueOf(cutoff); //add -AC-7 to let people know that this has AdaptorContamination of length 7 of used input adapter (!)
             if(tmpseq.length() > tmpqual.length()) {
                 int offset = tmpseq.length() - tmpqual.length();
                 tmpqual = tmpqual + tmpqual.substring(tmpqual.length()-offset, tmpqual.length());
@@ -54,7 +56,7 @@ public class AdaptorContaminator {
         } else {
             int elong = desired_read_length - tmpseq.length();
             tmpseq = tmpseq + adapter.substring(0, elong);
-            tmpid += "-AC+"+String.valueOf(elong);
+            tmpid += "-OL-" + String.valueOf(originalReadLength) + "-AC+"+String.valueOf(elong);
             tmpstrand = rawRead.getStrand();
             tmpqual = tmpqual + tmpqual.substring(tmpqual.length()-elong, tmpqual.length());
         }
