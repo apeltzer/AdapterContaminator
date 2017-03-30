@@ -26,17 +26,22 @@ public class AdapterClippingEvaluator {
         fr = new FileReader(inputFastq);
         bfr = new BufferedReader(fr);
         String[] fourLines;
+        int count = 0;
         while((fourLines = readFourLines(bfr)) != null) {
+            count++;
             Read r = new Read(fourLines[0], fourLines[1], fourLines[2], fourLines[3]);
             String id = r.getId();
             //"-OL-" + String.valueOf(originalReadLength) + "-AC-"+String.valueOf(cutoff)
+
             int originalLength = Integer.parseInt(id.split("-OL-")[1].split("-AC[-+]")[0]);
+
             int adapterCont = Integer.parseInt(id.split("-AC[-+]")[1]);
 
             int currSeqLength = r.getSeq().length();
 
             if(currSeqLength == originalLength-adapterCont){
                 correctlyTrimmed++;
+                System.out.println("all good");
             }
 
             if(currSeqLength > originalLength-adapterCont){
@@ -100,7 +105,7 @@ public class AdapterClippingEvaluator {
      *
      */
 
-    private  String[] readFourLines(BufferedReader br) throws Exception {
+    private String[] readFourLines(BufferedReader br) throws Exception {
         String[] fourLines = new String[4];
         for(int i = 0; i < 4; i++) {
             String line = br.readLine();
